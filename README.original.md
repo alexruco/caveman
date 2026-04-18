@@ -15,7 +15,7 @@
 
 ---
 
-MCP server exposing [caveman](https://github.com/JuliusBrussee/caveman) prompts + compress tool to any MCP-compatible agent — one registration, no file distribution, no sync.
+MCP server that exposes [caveman](https://github.com/JuliusBrussee/caveman) prompts and the compress tool to any MCP-compatible agent — one registration, no file distribution, no sync workflows.
 
 ## Before / After
 
@@ -31,16 +31,16 @@ MCP server exposing [caveman](https://github.com/JuliusBrussee/caveman) prompts 
 uvx caveman-mcp
 ```
 
-Or add to MCP config and let agent launch on demand.
+Or add to your MCP config and let the agent launch it on demand.
 
 ## MCP Config
 
-**Claude Code** (CLI — recommended):
+**Claude Code** (CLI command — recommended):
 ```bash
 claude mcp add caveman-mcp uvx -- caveman-mcp
 ```
 
-Global install across all projects — edit `~/.claude/settings.json`:
+This adds it to the project-local config. For global installation across all projects, edit `~/.claude/settings.json`:
 ```json
 {
   "mcpServers": {
@@ -52,7 +52,7 @@ Global install across all projects — edit `~/.claude/settings.json`:
 }
 ```
 
-> **Note:** Claude Code CLI and Claude desktop app both support local (stdio) MCP servers. Claude.ai web app only supports remote (HTTP/SSE) connectors.
+> **Note:** The Claude Code CLI and Claude desktop app both support local (stdio) MCP servers. The Claude.ai web app only supports remote (HTTP/SSE) connectors.
 
 **Cursor** (`.cursor/mcp.json`):
 ```json
@@ -120,7 +120,7 @@ Activate with `/caveman`, "talk like caveman", or "caveman mode". Stop with "sto
 
 ### `compress_prepare(filepath)`
 
-Reads markdown/text file, returns content + compression instructions. Agent compresses prose, passes result to `compress_write`.
+Reads a markdown/text file and returns its content with compression instructions. The calling agent compresses the prose, then passes the result to `compress_write`.
 
 ```
 compress_prepare("CLAUDE.md")
@@ -131,7 +131,7 @@ Refuses: sensitive files (`~/.ssh/`, `.env`, credentials), backup files (`.origi
 
 ### `compress_write(filepath, compressed_content)`
 
-Writes compressed content. Creates `.original.md` backup on first call (idempotent on retry). Returns `{ valid, errors }` — validates headings, code blocks, URLs preserved.
+Writes compressed content. Creates a `.original.md` backup on first call (idempotent on retry). Returns `{ valid, errors }` — validates that headings, code blocks, and URLs are preserved.
 
 ### `compress_restore(filepath)`
 
@@ -232,13 +232,13 @@ chmod +x ~/bin/caveman-toggle
 }
 ```
 
-**Usage:** run `python3 ~/bin/caveman-toggle` to turn auto-compress on or off. To use as bare command, add `~/bin` to PATH via `~/.zprofile` (not `.zshrc`):
+**Usage:** run `python3 ~/bin/caveman-toggle` to turn auto-compress on or off. To run it as a bare command, make sure `~/bin` is in your PATH — add to `~/.zprofile` (not `.zshrc`):
 
 ```bash
 echo 'export PATH="$HOME/bin:$PATH"' >> ~/.zprofile
 ```
 
-Files with existing `.original.md` backup are skipped.
+Files with an existing `.original.md` backup are skipped.
 
 ## Attribution
 
