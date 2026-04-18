@@ -35,7 +35,12 @@ Or add to your MCP config and let the agent launch it on demand.
 
 ## MCP Config
 
-**Claude Code** (`~/.claude/settings.json`):
+**Claude Code** (CLI command — recommended):
+```bash
+claude mcp add caveman-mcp uvx -- caveman-mcp
+```
+
+This adds it to the project-local config. For global installation across all projects, edit `~/.claude/settings.json`:
 ```json
 {
   "mcpServers": {
@@ -46,6 +51,8 @@ Or add to your MCP config and let the agent launch it on demand.
   }
 }
 ```
+
+> **Note:** The Claude.app desktop UI only supports remote (HTTP/SSE) connectors — use the CLI command above instead.
 
 **Cursor** (`.cursor/mcp.json`):
 ```json
