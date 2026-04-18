@@ -1,10 +1,8 @@
-benchmarks/results/*.json
 __pycache__/
 *.pyc
 .venv/
 .env.local
-caveman-compress.md
+.navg8
+.claude/
+.pytest_cache/
 **/.DS_Store
-.claude/worktrees/
-evals/snapshots/*.html
-evals/snapshots/*.png
