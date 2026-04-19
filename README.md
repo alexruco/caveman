@@ -8,9 +8,9 @@
 </p>
 <div class="install-box">
 ### Install caveman-mcp
-
 ```bash
 pip install caveman-mcp
+```
 </div>
 
 <p class="install-alt">
