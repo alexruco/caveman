@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "caveman-mcp"
 version = "0.1.0"
-description = "MCP server for caveman prompts and compress tool — no API key required"
+description = "MCP server that cuts 65% of tokens by compressing markdown files and activating caveman speak. Thinner and simpler than the original — no file distribution, no sync. Works with Claude Code, Cursor, Windsurf, Cline."
 readme = "README.md"
 license = { text = "MIT" }
 requires-python = ">=3.11"

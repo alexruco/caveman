@@ -5,25 +5,36 @@
 <h1 align="center">caveman-mcp</h1>
 
 <p align="center">
-  <strong>why use many token when few do trick</strong>
+  <strong>MCP server that cuts 65% of tokens by compressing markdown files and activating caveman speak.</strong><br/>
+  Thinner and simpler than the original — no file distribution, no sync. No API key. Works everywhere.
 </p>
 
 <p align="center">
+  <a href="https://pypi.org/project/caveman-mcp"><img src="https://img.shields.io/pypi/v/caveman-mcp?style=flat&color=blue" alt="PyPI"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue?style=flat" alt="License"></a>
   <a href="https://modelcontextprotocol.io"><img src="https://img.shields.io/badge/MCP-compatible-green?style=flat" alt="MCP"></a>
 </p>
 
 ---
 
-MCP server exposing [caveman](https://github.com/JuliusBrussee/caveman) prompts + compress tool to any MCP-compatible agent — one registration, no file distribution, no sync.
+## Why
 
-## Before / After
+Every token you send costs money and fills context. Long markdown files — `CLAUDE.md`, memory files, notes, docs — get read on every session. Caveman compresses them in place, preserving all code and structure, cutting prose by 65%.
 
-| Normal (69 tokens) | Caveman (19 tokens) |
-|--------------------|---------------------|
+| Without caveman-mcp (69 tokens) | With caveman-mcp (19 tokens) |
+|----------------------------------|------------------------------|
 | "The reason your React component is re-rendering is likely because you're creating a new object reference on each render cycle. When you pass an inline object as a prop, React's shallow comparison sees it as a different object every time, which triggers a re-render. I'd recommend using useMemo to memoize the object." | "New object ref each render. Inline object prop = new ref = re-render. Wrap in `useMemo`." |
 
-**Same fix. 75% less word.**
+**Same fix. 75% fewer tokens.**
+
+## Why MCP
+
+Caveman prompts used to require a file in every project. With MCP:
+
+- **Register once** — works across all projects, all agents
+- **No file to sync** — no copy-pasting prompts into repos
+- **Tools included** — compress any markdown file directly from the agent
+- **Any client** — Claude Code, Cursor, Windsurf, Cline, or any MCP-compatible host
 
 ## Install
 
@@ -31,20 +42,17 @@ MCP server exposing [caveman](https://github.com/JuliusBrussee/caveman) prompts 
 pip install caveman-mcp
 ```
 
-Or run directly without installing:
+Or run without installing:
 
 ```bash
 uvx caveman-mcp
 ```
 
-## MCP Config
+## Connect
 
-**Claude Code** (CLI — recommended):
-```bash
-claude mcp add caveman-mcp uvx -- caveman-mcp
-```
+**Claude Code** (global — recommended):
 
-Global install across all projects — edit `~/.claude/settings.json`:
+Edit `~/.claude/settings.json`:
 ```json
 {
   "mcpServers": {
@@ -56,7 +64,22 @@ Global install across all projects — edit `~/.claude/settings.json`:
 }
 ```
 
-> **Note:** Claude Code CLI and Claude desktop app both support local (stdio) MCP servers. Claude.ai web app only supports remote (HTTP/SSE) connectors.
+Or per-project via CLI:
+```bash
+claude mcp add caveman-mcp uvx -- caveman-mcp
+```
+
+**Claude Desktop** (`~/Library/Application Support/Claude/claude_desktop_config.json`):
+```json
+{
+  "mcpServers": {
+    "caveman-mcp": {
+      "command": "uvx",
+      "args": ["caveman-mcp"]
+    }
+  }
+}
+```
 
 **Cursor** (`.cursor/mcp.json`):
 ```json
@@ -90,6 +113,8 @@ Global install across all projects — edit `~/.claude/settings.json`:
 }
 ```
 
+> **Note:** Claude Code CLI and Claude desktop app both support local (stdio) MCP servers. Claude.ai web app only supports remote (HTTP/SSE) connectors.
+
 **Without uvx** (local clone):
 ```json
 {
@@ -100,59 +125,63 @@ Global install across all projects — edit `~/.claude/settings.json`:
 
 ## Prompts
 
-| Name | Description | Parameters |
-|------|-------------|------------|
-| `caveman` | Activate caveman compression | `mode` (optional) |
-| `caveman-commit` | Terse commit message style | — |
-| `caveman-review` | One-line code review style | — |
-| `caveman-help` | Quick-reference card | — |
+Once connected, activate caveman speak from any agent with `/caveman`, "talk like caveman", or "caveman mode". Stop with "stop caveman" or "normal mode".
 
-### Intensity levels (`mode` parameter)
+| Prompt | What it does |
+|--------|--------------|
+| `caveman` | Activate caveman compression |
+| `caveman-commit` | Terse commit message style |
+| `caveman-review` | One-line code review comments |
+| `caveman-help` | Quick-reference card |
+
+### Intensity levels
 
 | Mode | Effect |
 |------|--------|
 | `lite` | Drop filler, keep full sentences and articles |
-| `full` | Default. Drop articles, fragments OK, short synonyms |
+| `full` | Default — drop articles, fragments OK, short synonyms |
 | `ultra` | Abbreviate (DB/auth/req/res/fn), strip conjunctions, X→Y causality |
 | `wenyan-lite` | Semi-classical Chinese register |
 | `wenyan-full` | Full 文言文, 80–90% character reduction |
 | `wenyan-ultra` | Extreme, ancient scholar feel |
 
-Activate with `/caveman`, "talk like caveman", or "caveman mode". Stop with "stop caveman" or "normal mode".
+## Compress Tools
 
-## Tools
+Compress any markdown file in three steps — the agent does the work, caveman-mcp handles the I/O and validation.
 
 ### `compress_prepare(filepath)`
 
-Reads markdown/text file, returns content + compression instructions. Agent compresses prose, passes result to `compress_write`.
+Reads the file, returns content + compression instructions. The agent compresses the prose, then calls `compress_write`.
 
 ```
 compress_prepare("CLAUDE.md")
 → { filepath, original_content, instructions }
 ```
 
-Refuses: sensitive files (`~/.ssh/`, `.env`, credentials), backup files (`.original.md`), non-text formats, files > 500 KB.
+Refuses: sensitive files (`~/.ssh/`, `.env`, credentials), existing backups, non-text formats, files > 500 KB.
 
 ### `compress_write(filepath, compressed_content)`
 
-Writes compressed content. Creates `.original.md` backup on first call (idempotent on retry). Returns `{ valid, errors }` — validates headings, code blocks, URLs preserved.
+Writes compressed content. Auto-creates a `.original.md` backup on first call. Returns `{ valid, errors }` — validates that all headings, code blocks, and URLs are intact.
 
 ### `compress_restore(filepath)`
 
-Restores from `.original.md` backup and deletes it. Call if validation keeps failing.
+Restores from `.original.md` backup. Call if something goes wrong.
 
-**Typical compress flow:**
+**Flow:**
 
 ```
-compress_prepare("CLAUDE.md")           ← agent reads original
+compress_prepare("CLAUDE.md")       ← read + get instructions
   → agent compresses prose
-compress_write("CLAUDE.md", result)     ← write + validate
+compress_write("CLAUDE.md", result) ← write + validate
   → { valid: true, errors: [] }
 ```
 
+The result:
+
 ```
-CLAUDE.md          ← compressed (Claude reads this every session)
-CLAUDE.original.md ← human-readable backup (you edit this)
+CLAUDE.md          ← compressed (65% fewer tokens every session)
+CLAUDE.original.md ← full backup (edit this, re-compress anytime)
 ```
 
 ## Auto-compress with Claude Code hook
@@ -236,17 +265,17 @@ chmod +x ~/bin/caveman-toggle
 }
 ```
 
-**Usage:** run `python3 ~/bin/caveman-toggle` to turn auto-compress on or off. To use as bare command, add `~/bin` to PATH via `~/.zprofile` (not `.zshrc`):
+**Toggle:** run `python3 ~/bin/caveman-toggle` to turn auto-compress on or off. To use as a bare command, add `~/bin` to PATH via `~/.zprofile` (not `.zshrc`):
 
 ```bash
 echo 'export PATH="$HOME/bin:$PATH"' >> ~/.zprofile
 ```
 
-Files with existing `.original.md` backup are skipped.
+Files with an existing `.original.md` backup are skipped automatically.
 
 ## Attribution
 
-Fork of [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) — MIT licence, copyright © 2026 Julius Brussee. Original prompt design and caveman concept by Julius Brussee. This fork strips the file-distribution system and repackages caveman as a single MCP server.
+Fork of [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) — MIT licence, copyright © 2026 Julius Brussee. Original prompt design and caveman concept by Julius Brussee. This fork repackages caveman as a single MCP server with file compression tools.
 
 ## License
 
