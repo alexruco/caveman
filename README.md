@@ -7,10 +7,13 @@
 >
 </p>
 <div class="install-box">
+
 ### Install caveman-mcp
 
-```bash
+<pre><code class="bash">
 pip install caveman-mcp
+</code></pre>
+
 </div>
 
 <p class="install-alt">
