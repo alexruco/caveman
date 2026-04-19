@@ -233,6 +233,59 @@ def compress_restore(filepath: str) -> str:
 # ── Entry point ───────────────────────────────────────────────────────────────
 
 def main() -> None:
+    import argparse
+    from importlib.metadata import version, PackageNotFoundError
+
+    try:
+        _version = version("caveman-mcp")
+    except PackageNotFoundError:
+        _version = "0.1.0"
+
+    parser = argparse.ArgumentParser(
+        prog="caveman-mcp",
+        description="MCP server exposing caveman prompts and markdown compress tools. No API key required.",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=(
+            "Prompts:  caveman  caveman-commit  caveman-review  caveman-help\n"
+            "Tools:    compress_prepare  compress_write  compress_restore\n\n"
+            "Run with no flags to start the MCP server (stdio transport)."
+        ),
+    )
+    parser.add_argument("-V", "--version", action="version", version=f"%(prog)s {_version}")
+    parser.add_argument(
+        "--list-tools",
+        action="store_true",
+        help="print available MCP tools and exit",
+    )
+    parser.add_argument(
+        "--list-prompts",
+        action="store_true",
+        help="print available MCP prompts and exit",
+    )
+
+    args = parser.parse_args()
+
+    if args.list_tools:
+        tools = [
+            ("compress_prepare", "read file and return content + compression instructions"),
+            ("compress_write",   "write compressed content, validate, create backup"),
+            ("compress_restore", "restore original file from .original.md backup"),
+        ]
+        for name, desc in tools:
+            print(f"  {name:<20} {desc}")
+        return
+
+    if args.list_prompts:
+        prompts = [
+            ("caveman",        "terse caveman compression (modes: lite/full/ultra/wenyan-*)"),
+            ("caveman-commit", "conventional commit messages, terse and exact"),
+            ("caveman-review", "one-line PR review comments with severity prefix"),
+            ("caveman-help",   "quick-reference card for all caveman modes"),
+        ]
+        for name, desc in prompts:
+            print(f"  {name:<20} {desc}")
+        return
+
     mcp.run()
 
 if __name__ == "__main__":

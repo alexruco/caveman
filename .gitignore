@@ -6,3 +6,7 @@ __pycache__/
 .claude/
 .pytest_cache/
 **/.DS_Store
+*.original.md
+dist/
+*.egg-info/
+.secrets

@@ -28,10 +28,14 @@ MCP server exposing [caveman](https://github.com/JuliusBrussee/caveman) prompts 
 ## Install
 
 ```bash
-uvx caveman-mcp
+pip install caveman-mcp
 ```
 
-Or add to MCP config and let agent launch on demand.
+Or run directly without installing:
+
+```bash
+uvx caveman-mcp
+```
 
 ## MCP Config
 
