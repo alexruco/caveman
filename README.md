@@ -1,7 +1,7 @@
 <p align="center">
 <img 
-  width="100" 
-  height="100" 
+  width="200" 
+  height="200" 
   src="https://raw.githubusercontent.com/alexruco/caveman-mcp/refs/heads/main/images/caveman-mcp.png" 
   alt="hammer"
 >
