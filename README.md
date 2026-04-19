@@ -6,7 +6,18 @@
   alt="hammer"
 >
 </p>
+<div class="install-box">
+  <span class="prompt">❯</span>
+  <span>pip install caveman-mcp</span>
+  <button class="copy-btn"
+    onclick="navigator.clipboard.writeText('pip install caveman-mcp'); this.textContent='✓'; setTimeout(()=>this.textContent='Copy',1200)">
+    Copy
+  </button>
+</div>
 
+<p class="install-alt">
+  or run without installing: <code>uvx caveman-mcp</code>
+</p>
 <h1 align="center">caveman-mcp</h1>
 
 <p align="center">
