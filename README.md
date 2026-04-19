@@ -7,12 +7,10 @@
 >
 </p>
 <div class="install-box">
-  <span class="prompt">❯</span>
-  <span>pip install caveman-mcp</span>
-  <button class="copy-btn"
-    onclick="navigator.clipboard.writeText('pip install caveman-mcp'); this.textContent='✓'; setTimeout(()=>this.textContent='Copy',1200)">
-    Copy
-  </button>
+### Install caveman-mcp
+
+```bash
+pip install caveman-mcp
 </div>
 
 <p class="install-alt">
