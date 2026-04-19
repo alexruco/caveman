@@ -1,5 +1,10 @@
 <p align="center">
-<img src="https://raw.githubusercontent.com/alexruco/caveman-mcp/refs/heads/main/images/caveman-mcp.png" alt="hammer">
+<img 
+  width="100" 
+  height="100" 
+  src="https://raw.githubusercontent.com/alexruco/caveman-mcp/refs/heads/main/images/caveman-mcp.png" 
+  alt="hammer"
+>
 </p>
 
 <h1 align="center">caveman-mcp</h1>
