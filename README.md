@@ -1,5 +1,35 @@
 <p align="center">
-  <img src="https://em-content.zobj.net/source/apple/391/rock_1faa8.png" width="120" />
+ <svg width="72" height="80" viewBox="0 0 72 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- handle -->
+      <rect x="32" y="48" width="8" height="28" rx="2" fill="#5c4a30"></rect>
+      <rect x="33.5" y="48" width="2" height="28" rx="1" fill="#7a6240" opacity=".5"></rect>
+      <!-- wrap bands -->
+      <rect x="31" y="54" width="10" height="3" rx="1" fill="#3d2e1a"></rect>
+      <rect x="31" y="61" width="10" height="3" rx="1" fill="#3d2e1a"></rect>
+      <rect x="31" y="68" width="10" height="3" rx="1" fill="#3d2e1a"></rect>
+      <!-- triple head -->
+      <!-- left head -->
+      <ellipse cx="20" cy="32" rx="14" ry="13" fill="#7a7068"></ellipse>
+      <ellipse cx="18" cy="30" rx="7" ry="6" fill="#a09488" opacity=".4"></ellipse>
+      <!-- right head -->
+      <ellipse cx="52" cy="32" rx="14" ry="13" fill="#7a7068"></ellipse>
+      <ellipse cx="50" cy="30" rx="7" ry="6" fill="#a09488" opacity=".4"></ellipse>
+      <!-- center head -->
+      <ellipse cx="36" cy="26" rx="16" ry="14" fill="#8c8278"></ellipse>
+      <ellipse cx="33" cy="23" rx="8" ry="6" fill="#b0a89e" opacity=".35"></ellipse>
+      <!-- MCP text on center -->
+      <text x="36" y="30" text-anchor="middle" font-family="Courier New, monospace" font-size="9" font-weight="900" fill="#2a2420" letter-spacing="0.5">MCP</text>
+      <!-- spiral on left -->
+      <path d="M20 28 Q22 26 20 24 Q18 22 20 20" stroke="#c8a96e" stroke-width="1.2" fill="none" opacity=".7"></path>
+      <!-- dots -->
+      <circle cx="16" cy="36" r="1.5" fill="#5a5248" opacity=".6"></circle>
+      <circle cx="24" cy="38" r="1" fill="#5a5248" opacity=".6"></circle>
+      <circle cx="48" cy="36" r="1.5" fill="#5a5248" opacity=".6"></circle>
+      <circle cx="56" cy="38" r="1" fill="#5a5248" opacity=".6"></circle>
+      <!-- teal accent edges -->
+      <path d="M6 32 Q8 20 20 20" stroke="#7ab8a0" stroke-width="2" fill="none" opacity=".5"></path>
+      <path d="M66 32 Q64 20 52 20" stroke="#7ab8a0" stroke-width="2" fill="none" opacity=".5"></path>
+    </svg>
 </p>
 
 <h1 align="center">caveman-mcp</h1>
